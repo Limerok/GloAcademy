@@ -1,11 +1,7 @@
-let money = 50000;
-let income = 200000;
-let addExpenses = 40000;
-let deposit = 40000;
-let mission = 'Выучить JavaScript';
-let period = 7;
-
-alert(mission + ' за ' + period + ' недель');
-alert(mission + ' за ' + (period - 5) + ' недели');
-console.log('Зарабатывать от ' + income + 'руб. ' + 'в месяц');
-console.log('Увеличить заработок до ' + (income + income) + 'руб. ' + 'в месяц');
+let money = 50000; //“Доход за месяц”
+let income = 40000;//строка с дополнительными доходом (например: фриланс)
+let addExpenses = (500, 4000, 3000);//строка с перечислением дополнительных расходов
+//через запятую (например: интернет, такси, коммуналка)
+let deposit = true;//любое булево значение
+let mission = 9000000;//любое число (Какую сумму хотите накопить)
+let period = 6;//число от 1 до 12 (месяцев)
