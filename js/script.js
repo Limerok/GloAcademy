@@ -19,15 +19,16 @@ amount2 = +(amount2);
 budgetMonth = money - amount1 -amount2; //Вычислить бюджет на месяц, учитывая обязательные расходы
 savings = Math.ceil(mission - budgetMonth); //посчитать за сколько месяцев будет достигнута цель mission
 butgetDay = Math.floor(budgetMonth / 30);//дневной бюджет
+console.log(typeof butgetDay);
 
-if (butgetDay > 1200) {
-    alert('У вас высокий уровень дохода');
-} else if (600 < butgetDay <= 1200) {
-    alert('У вас средний уровень дохода');
-} else if (0 < butgetDay <= 600) {
-    alert('К сожалению у вас уровень дохода ниже среднего');
-} else {
-    alert('Что то пошло не так');
+if (butgetDay >= 1200) {
+    console.log('У вас высокий уровень дохода');
+} else if (600 <= butgetDay) {
+    console.log('У вас средний уровень дохода');
+} else if (0 <= butgetDay) {
+    console.log('К сожалению у вас уровень дохода ниже среднего');
+} else if (butgetDay < 0) {
+    console.log('Что то пошло не так');
 }
 
 console.log('Бюджет на месяц: ' + budgetMonth + 'руб.'); //Вычислить бюджет на месяц, вывести в консоль
