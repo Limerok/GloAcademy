@@ -8,7 +8,7 @@ let addExpenses = prompt('Перечислите возможные расход
 let deposit = confirm('Есть ли у вас депозит в банке?');//любое булево значение
 let mission = 9000000;//любое число (Какую сумму хотите накопить)
 let period = 6;//число от 1 до 12 (месяцев)
-let expenses1, expenses2, amount1, amount2, budgetMonth, savings, butgetDay;
+let expenses1, expenses2, amount1, amount2, savings, butgetDay;
 
 expenses1 = prompt('Введите обязательную статью расходов (например путешествие, еда');
 amount1 = prompt('Во сколько это обойдется?'); // Вписываем обязательный расход 1
