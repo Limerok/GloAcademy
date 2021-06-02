@@ -46,12 +46,19 @@ const getStatusIncome = function (variableCompared) { //Функция пров�
 
 const getExpensesMonth = function(numberExpensesMonth) {
     let sum = 0;
+    let sumExpenses;
     let expenses = [];
 
     for (let i = 0; i < numberExpensesMonth; i++) {
 
         expenses[i] = prompt('Введите обязательную статью расходов (например: развлечения).');
-        sum += +prompt('Во сколько это обойдется?');
+        
+        do{
+            sumExpenses = prompt('Во сколько это обойдется?');
+        }
+        while ( !isNamber(sumExpenses) ); 
+        sum += +sumExpenses;
+
     }
     console.log(expenses);
     return sum;
@@ -70,13 +77,22 @@ function getTargetMonth (divisible, divisor) {
     return Math.ceil(divisible / divisor); //посчитать за сколько месяцев будет достигнута цель mission
 }
 
+function getTargetMonthStatus (status) {
+    if (status >= 0) {
+        console.log('Цель будет достигнута за: ' + status + ' месяцев.');
+    } else {
+        console.log('Цель не будет достигнута');
+    }
+}
+
 console.log(money, showTypeOf(money)); //вызовы функции showTypeOf
 console.log(income, showTypeOf(income)); //вызовы функции showTypeOf
 console.log(deposit, showTypeOf(deposit)); //вызовы функции showTypeOf
 console.log('Сумма обязательных расходов: ' + expensesAmonth + 'руб. в месяц');//Расходы за месяц 
 //вызов getExpensesMonth
 console.log(addExpenses.toLowerCase().split(', ')); //Вывод возможных расходов в виде массива (addExpenses)
-console.log('Цель будет достигнута за: ' + getTargetMonth(mission, accumulatedMonth) + ' месяцев.'); //Cрок достижения 
-//цели в месяцах (результат вызова функции getTargetMonth)
+
+getTargetMonthStatus(getTargetMonth(mission, accumulatedMonth));// Будет ли достигнута цель
+
 console.log('Дневной бюджет: ' + butgetDay + 'руб.'); //Бюджет на день butgetDay
 console.log(getStatusIncome(butgetDay)); // Вывод уровня дохода
