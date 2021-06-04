@@ -27,6 +27,7 @@ let appData = {
 };
 
 
+
 let expenses1, expenses2, amount1, amount2, savings, butgetDay;
 
 
