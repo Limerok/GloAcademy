@@ -59,38 +59,38 @@ let appData = {
     expensesMonth: 0,//Сумма обязательных расходов в месяц
     start: function () {
         console.log('start', this);
-        appData.budget = +inputSalaryAmount.value; //Доход за месяц из инпута
+        this.budget = +inputSalaryAmount.value; //Доход за месяц из инпута
         
 
-        appData.getExpenses();
-        appData.getIncome();
-        appData.getExpensesMonth();
-        appData.getIncomeMonth();
+        this.getExpenses();
+        this.getIncome();
+        this.getExpensesMonth();
+        this.getIncomeMonth();
         
-        appData.getAddExpenses();
-        appData.getAddIncome();
-        appData.getTargetMonth();
-        appData.getStatusIncome(); 
+        this.getAddExpenses();
+        this.getAddIncome();
+        this.getTargetMonth();
+        this.getStatusIncome(); 
         
-        appData.getBudget();
-        appData.getInfoDeposit();
+        this.getBudget();
+        this.getInfoDeposit();
         
 
         
-        appData.getAddExpenses();
-        appData.showResult();
+        this.getAddExpenses();
+        this.showResult();
 
         
     },
     showResult: function() { //Выводим результаты
         console.log('showResult', this);
-        resultBudgetMonth.value = appData.budgetMonth;
-        resultBudgetDay.value = appData.budgetDay;
-        resultExpensesMonth.value = appData.expensesMonth;
-        resultAdditionalExpenses.value = appData.addExpenses.join(', ');
-        resultAdditionalIncome.value = appData.addIncome.join(', ');
-        resultTargetMonth.value = Math.ceil(appData.getTargetMonth());
-        resultIncomePeriod.value = appData.calcSavedMoney();
+        resultBudgetMonth.value = this.budgetMonth;
+        resultBudgetDay.value = this.budgetDay;
+        resultExpensesMonth.value = this.expensesMonth;
+        resultAdditionalExpenses.value = this.addExpenses.join(', ');
+        resultAdditionalIncome.value = this.addIncome.join(', ');
+        resultTargetMonth.value = Math.ceil(this.getTargetMonth());
+        resultIncomePeriod.value = this.calcSavedMoney();
 
         inputPeriod.addEventListener('input', function() {
             resultIncomePeriod.value = appData.calcSavedMoney();
@@ -177,25 +177,25 @@ let appData = {
 
     getBudget: function () { 
         console.log('getBudget', this);
-        appData.budgetMonth = appData.budget + appData.incomeMohth - appData.expensesMonth; // Накопления за месяц (Доходы минус расходы)
-        appData.budgetDay = Math.floor(appData.budgetMonth / 30); // Бюджет на день
+        this.budgetMonth = this.budget + this.incomeMohth - this.expensesMonth; // Накопления за месяц (Доходы минус расходы)
+        this.budgetDay = Math.floor(this.budgetMonth / 30); // Бюджет на день
     },
     getStatusIncome: function () { //Функция проверки уровня дохода
         console.log('getStatusIncome', this);
-        if (appData.budgetDay >= 1200) {
+        if (this.budgetDay >= 1200) {
             console.log('У вас высокий уровень дохода');
-        } else if (600 <= appData.budgetDay) {
+        } else if (600 <= this.budgetDay) {
             console.log('У вас средний уровень дохода');
-        } else if (0 <= appData.budgetDay) {
+        } else if (0 <= this.budgetDay) {
             console.log('К сожалению у вас уровень дохода ниже среднего');
-        } else if (appData.budgetDay < 0) {
+        } else if (this.budgetDay < 0) {
             console.log('Что то пошло не так');
         }
     },
     
     getTargetMonth: function () {
         console.log('getTargetMonth', this);
-        return inputMission.value / appData.budgetMonth;
+        return inputMission.value / this.budgetMonth;
 
         /* let status = Math.ceil(appData.mission / appData.budgetMonth); //посчитать за сколько месяцев будет достигнута 
         //цель mission
@@ -208,13 +208,13 @@ let appData = {
     
     getInfoDeposit: function() {
         console.log('getInfoDeposit', this);
-        if (appData.deposit) {
+        if (this.deposit) {
             do{
-                appData.percentDeposit = prompt('Какой годовой процент?', 5);
-            } while (!isNamber(appData.percentDeposit));
+                this.percentDeposit = prompt('Какой годовой процент?', 5);
+            } while (!isNamber(this.percentDeposit));
             do{
-                appData.moneyDeposit = prompt('Какая сумма у Вас на вкладе?', 140000);
-            } while (!isNamber(appData.moneyDeposit));
+                this.moneyDeposit = prompt('Какая сумма у Вас на вкладе?', 140000);
+            } while (!isNamber(this.moneyDeposit));
         }
     },
 
@@ -225,7 +225,7 @@ let appData = {
     },
     calcSavedMoney: function() { //Накопления за период(месяцев)
         console.log('calcSavedMoney', this);
-        return appData.budgetMonth * inputPeriod.value;
+        return this.budgetMonth * inputPeriod.value;
     },
 
     event: function() {
