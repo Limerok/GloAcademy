@@ -66,7 +66,6 @@ let appData = {
         this.getExpensesMonth();
         this.getIncomeMonth();
         
-        this.getAddExpenses();
         this.getAddIncome();
         this.getTargetMonth();
         this.getStatusIncome(); 
