@@ -42,7 +42,6 @@ resultTargetMonth = document.getElementsByClassName('target_month-value')[0];//�
 
 
 
-
 let appData = {
     income: {},//объект с доп доходами
     incomeMohth: 0, //Дополнительный заработок
@@ -121,6 +120,9 @@ let appData = {
         expensesItems.forEach(function(item) {
             let itemExpenses = item.querySelector('.expenses-title').value;//Обяз.расх наимен
             let cashExpenses = item.querySelector('.expenses-amount').value;//Обяз.расх сумма
+
+            /* itemExpenses.disabled = true; */
+            /* cashExpenses.disabled = true; */
 
             if (itemExpenses !== '' && cashExpenses !== ''){//если не пустые то
                 appData.expenses[itemExpenses] = +cashExpenses;//записываем в объект
@@ -227,13 +229,107 @@ let appData = {
         console.log('calcSavedMoney', this);
         return this.budgetMonth * inputPeriod.value;
     },
+    reset: function () {
+        resultBudgetMonth.value = '';
+        resultBudgetDay.value = '';
+        resultExpensesMonth.value = '';
+        resultAdditionalExpenses.value = '';
+        resultAdditionalIncome.value = '';
+        resultTargetMonth.value = '';
+        resultIncomePeriod.value = '';
 
-    event: function() {
+        this.income = {};//объект с доп доходами
+        this.incomeMohth = 0; //Дополнительный заработок
+        this.addIncome = [];//Возможные доходы
+        this.expenses = {}; // Объект с обязательными расходами
+        this.addExpenses = [];//Возможные расходы
+        this.deposit = false; // есть ли депозит в банке
+        this.percentDeposit = 0; // процент по вкладу
+        this.moneyDeposit = 0; // сколько денег на вкладе
+        this.mission = 0; //Желаем накопить
+        this.budget = 0;//Доход за месяц
+        this.budgetDay = 0; //Бюджет на день
+        this.budgetMonth = 0; //Бюджет на месяц (Доход - обязательные расходы)
+        this.expensesMonth = 0;//Сумма обязательных расходов в месяц
+
+        buttonStart.style.display = 'block';
+        buttonCancel.style.display = 'none';
+
+        inputSalaryAmount.disabled = false;
+        inputSalaryAmount.value = '';
+        inputAdditionalExpenses.disabled = false;
+        inputAdditionalExpenses.value = '';
+        inputMission.disabled = false;
+        inputMission.value = '';
+        expensesItems.forEach(function(item) {
+            let itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
+            let cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
+
+            itemExpenses.disabled = false;
+            itemExpenses.value = '';
+            cashExpenses.disabled = false;
+            cashExpenses.value = '';
+        });
+        incomeItems.forEach(function(item) {//Проходим коллекцию ДопДохода
+            let itemIncome = item.querySelector('.income-title');//Доп.доход наимен
+            let cashIncome = item.querySelector('.income-amount');//до.доход сумма
+
+            itemIncome.disabled = false;
+            itemIncome.value = '';
+            cashIncome.disabled = false;
+            cashIncome.value = '';
+        });
+        inputAdditionalIncome.forEach(function(item) {
+            item.disabled = false;
+            item.value = '';
+        });
+        depositCheckbox.disabled = false;
+        buttonIncomeAdd.style.display = 'block';
+        buttonExpensesAdd.style.display = 'block';
+    },
+
+    eventStart: function() {
+        //localStorage.setItem('clean', JSON.stringify(this));
         console.log('event', this);
+
+        buttonStart.style.display = 'none';
+        buttonCancel.style.display = 'block';
+
+        inputSalaryAmount.disabled = true;
+        inputAdditionalExpenses.disabled = true;
+        inputMission.disabled = true;
+        expensesItems.forEach(function(item) {
+            let itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
+            let cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
+
+            itemExpenses.disabled = true;
+            cashExpenses.disabled = true;
+        });
+        incomeItems.forEach(function(item) {//Проходим коллекцию ДопДохода
+            let itemIncome = item.querySelector('.income-title');//Доп.доход наимен
+            let cashIncome = item.querySelector('.income-amount');//до.доход сумма
+
+            itemIncome.disabled = true;
+            cashIncome.disabled = true;
+        });
+        inputAdditionalIncome.forEach(function(item) {
+            item.disabled = true;
+        });
+        depositCheckbox.disabled = true;
+        buttonIncomeAdd.style.display = 'none';
+        buttonExpensesAdd.style.display = 'none';
+
+
         appData.start();
+    },
+    EventClear: function(){
+        appData.reset();
     }
 
 };
+
+
+
 
 buttonStart.disabled = true;
 inputSalaryAmount.addEventListener('input', function() {
@@ -246,8 +342,8 @@ inputSalaryAmount.addEventListener('input', function() {
 });
 
 
-buttonStart.addEventListener('click', appData.event);
-
+buttonStart.addEventListener('click', appData.eventStart);
+buttonCancel.addEventListener('click', appData.EventClear);
 buttonIncomeAdd.addEventListener('click', appData.addIncomeBlock);
 buttonExpensesAdd.addEventListener('click', appData.addExpensesBlock);
 inputPeriod.addEventListener('input', appData.getPeriodAmount);
