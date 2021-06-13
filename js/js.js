@@ -89,7 +89,7 @@ let appData = {
         resultTargetMonth.value = Math.ceil(appData.getTargetMonth());
         resultIncomePeriod.value = appData.calcSavedMoney();
 
-        inputPeriod.addEventListener('change', function() {
+        inputPeriod.addEventListener('input', function() {
             resultIncomePeriod.value = appData.calcSavedMoney();
         });
 
@@ -207,7 +207,6 @@ let appData = {
     getPeriodAmount: function() {
         let periodAmount = document.querySelector('.period-amount');
         periodAmount.textContent = inputPeriod.value;
-        console.log(periodAmount);
     },
     calcSavedMoney: function() { //Накопления за период(месяцев)
         return appData.budgetMonth * inputPeriod.value;
@@ -229,7 +228,7 @@ buttonStart.addEventListener('click', appData.start);
 
 buttonIncomeAdd.addEventListener('click', appData.addIncomeBlock);
 buttonExpensesAdd.addEventListener('click', appData.addExpensesBlock);
-inputPeriod.addEventListener('change', appData.getPeriodAmount);
+inputPeriod.addEventListener('input', appData.getPeriodAmount);
 
 
 appData.getInfoDeposit();
