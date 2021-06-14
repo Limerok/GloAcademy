@@ -57,7 +57,6 @@ let appData = {
     budgetMonth: 0, //Бюджет на месяц (Доход - обязательные расходы)
     expensesMonth: 0,//Сумма обязательных расходов в месяц
     start: function () {
-        console.log('start', this);
         this.budget = +inputSalaryAmount.value; //Доход за месяц из инпута
         
 
@@ -81,7 +80,6 @@ let appData = {
         
     },
     showResult: function() { //Выводим результаты
-        console.log('showResult', this);
         resultBudgetMonth.value = this.budgetMonth;
         resultBudgetDay.value = this.budgetDay;
         resultExpensesMonth.value = this.expensesMonth;
@@ -95,7 +93,6 @@ let appData = {
         });
     },
     addIncomeBlock: function() { //Кнопка доп дохода
-        console.log('addIncomeBlock', this);
         let cloneIncomeItem = incomeItems[0].cloneNode(true);
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, buttonIncomeAdd);
 
@@ -105,7 +102,6 @@ let appData = {
         }
     },
     addExpensesBlock: function() { // Кнопка обязательных расходов
-        console.log('addExpensesBlock', this);
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, buttonExpensesAdd);
 
@@ -115,7 +111,6 @@ let appData = {
         }
     },
     getExpenses: function() { // Обязательные расходы
-        console.log('getExpenses', this);
         expensesItems.forEach(function(item) {
             let itemExpenses = item.querySelector('.expenses-title').value;//Обяз.расх наимен
             let cashExpenses = item.querySelector('.expenses-amount').value;//Обяз.расх сумма
@@ -129,7 +124,6 @@ let appData = {
         });
     },
     getIncome: function() { //Доп доход
-        console.log('getIncome', this);
         incomeItems.forEach(function(item) {//Проходим коллекцию ДопДохода
             let itemIncome = item.querySelector('.income-title').value;//Доп.доход наимен
             let cashIncome = item.querySelector('.income-amount').value;//до.доход сумма
@@ -140,7 +134,6 @@ let appData = {
         });
     },
     getAddExpenses: function() {// Получаем возможные расходы
-        console.log('getAddExpenses', this);
         let addExpenses = inputAdditionalExpenses.value.toLowerCase().split(',');
         // В нижний регистр и делаем массив
         addExpenses.forEach(function(item) { // Проходим массив
@@ -152,7 +145,6 @@ let appData = {
     },
 
     getAddIncome: function() {// Записываем возможные доходы
-        console.log('getAddIncome', this);
         inputAdditionalIncome.forEach(function(item) {
             let itemValue = item.value.trim();//Убираем пробелы
             if (itemValue !== '') {// Если не пустой
@@ -164,25 +156,21 @@ let appData = {
 
 
     getExpensesMonth: function() { //Сумма обязательных раходов
-        console.log('getExpensesMonth', this);
         for (let key in appData.expenses) {
             appData.expensesMonth += appData.expenses[key];
         }
     },
     getIncomeMonth: function() {
-        console.log('getIncomeMonth', this);
         for (let key in appData.income) {
             appData.incomeMohth += appData.income[key];
         }
     },
 
     getBudget: function () { 
-        console.log('getBudget', this);
         this.budgetMonth = this.budget + this.incomeMohth - this.expensesMonth; // Накопления за месяц (Доходы минус расходы)
         this.budgetDay = Math.floor(this.budgetMonth / 30); // Бюджет на день
     },
     getStatusIncome: function () { //Функция проверки уровня дохода
-        console.log('getStatusIncome', this);
         if (this.budgetDay >= 1200) {
             console.log('У вас высокий уровень дохода');
         } else if (600 <= this.budgetDay) {
@@ -195,7 +183,6 @@ let appData = {
     },
     
     getTargetMonth: function () {
-        console.log('getTargetMonth', this);
         return inputMission.value / this.budgetMonth;
 
         /* let status = Math.ceil(appData.mission / appData.budgetMonth); //посчитать за сколько месяцев будет достигнута 
@@ -208,7 +195,6 @@ let appData = {
     },
     
     getInfoDeposit: function() {
-        console.log('getInfoDeposit', this);
         if (this.deposit) {
             do{
                 this.percentDeposit = prompt('Какой годовой процент?', 5);
@@ -220,12 +206,10 @@ let appData = {
     },
 
     getPeriodAmount: function() {
-        console.log('getPeriodAmount', this);
         let periodAmount = document.querySelector('.period-amount');
         periodAmount.textContent = inputPeriod.value;
     },
     calcSavedMoney: function() { //Накопления за период(месяцев)
-        console.log('calcSavedMoney', this);
         return this.budgetMonth * inputPeriod.value;
     },
     reset: function () {
@@ -261,18 +245,26 @@ let appData = {
         inputAdditionalExpenses.value = '';
         inputMission.disabled = false;
         inputMission.value = '';
-        expensesItems.forEach(function(item) {
+        expensesItems.forEach(function(item, i) {
             let itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
             let cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
+
+            if (i > 0) {
+                item.remove();
+            }
 
             itemExpenses.disabled = false;
             itemExpenses.value = '';
             cashExpenses.disabled = false;
             cashExpenses.value = '';
         });
-        incomeItems.forEach(function(item) {//Проходим коллекцию ДопДохода
+        incomeItems.forEach(function(item, i) {//Проходим коллекцию ДопДохода
             let itemIncome = item.querySelector('.income-title');//Доп.доход наимен
             let cashIncome = item.querySelector('.income-amount');//до.доход сумма
+            
+            if (i > 0) {
+                item.remove();
+            }
 
             itemIncome.disabled = false;
             itemIncome.value = '';
@@ -284,13 +276,14 @@ let appData = {
             item.value = '';
         });
         depositCheckbox.disabled = false;
+        inputPeriod.value = 1;
+        alertResultPeriod.textContent = '1';
         buttonIncomeAdd.style.display = 'block';
         buttonExpensesAdd.style.display = 'block';
     },
 
     eventStart: function() {
         //localStorage.setItem('clean', JSON.stringify(this));
-        console.log('event', this);
 
         buttonStart.style.display = 'none';
         buttonCancel.style.display = 'block';
@@ -352,12 +345,12 @@ inputPeriod.addEventListener('input', appData.getPeriodAmount);
 
 
 
-let arr = [];
+/* let arr = [];
 let i = 0;
 for (let item of appData.addExpenses) {
     arr[i] = item[0].toUpperCase() + item.slice(1);
     i++;
-}
+} */
 
 
 
