@@ -89,8 +89,8 @@ let appData = {
         resultTargetMonth.value = Math.ceil(this.getTargetMonth());
         resultIncomePeriod.value = this.calcSavedMoney();
 
-        inputPeriod.addEventListener('input', function() {
-            resultIncomePeriod.value = appData.calcSavedMoney();
+        inputPeriod.addEventListener('input', () => {
+            resultIncomePeriod.value = this.calcSavedMoney();
         });
     },
     addIncomeBlock: function() { //Кнопка доп дохода
@@ -112,7 +112,7 @@ let appData = {
         }
     },
     getExpenses: function() { // Обязательные расходы
-        expensesItems.forEach(function(item) {
+        expensesItems.forEach((item) =>  {
             let itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
             let cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
 
@@ -125,12 +125,12 @@ let appData = {
             /* cashExpenses.disabled = true; */
 
             if (itemExpenses !== '' && cashExpenses !== ''){//если не пустые то
-                appData.expenses[itemExpenses] = +cashExpenses;//записываем в объект
+                this.expenses[itemExpenses] = +cashExpenses;//записываем в объект
             }
         });
     },
     getIncome: function() { //Доп доход
-        incomeItems.forEach(function(item) {//Проходим коллекцию ДопДохода
+        incomeItems.forEach((item) => {//Проходим коллекцию ДопДохода
             let itemIncome = item.querySelector('.income-title');//Доп.доход наимен
             let cashIncome = item.querySelector('.income-amount');//до.доход сумма
 
@@ -141,7 +141,7 @@ let appData = {
             cashIncome = cashIncome.value;//до.доход сумма
 
             if (itemIncome !== '' && cashIncome !== '') {
-                appData.income[itemIncome] = +cashIncome;// записываем в объект
+                this.income[itemIncome] = +cashIncome;// записываем в объект
             }
         });
     },
@@ -149,20 +149,20 @@ let appData = {
         inputAdditionalExpenses.disabled = true;
         let addExpenses = inputAdditionalExpenses.value.toLowerCase().split(',');
         // В нижний регистр и делаем массив
-        addExpenses.forEach(function(item) { // Проходим массив
+        addExpenses.forEach((item) => { // Проходим массив
             item = item.trim();//Убираем пробелы
             if (item !== ''){// Если не пустой
-                appData.addExpenses.push(item);//Записываем в массив
+                this.addExpenses.push(item);//Записываем в массив
             }
         });
     },
 
     getAddIncome: function() {// Записываем возможные доходы
-        inputAdditionalIncome.forEach(function(item) {
+        inputAdditionalIncome.forEach((item) => {
             item.disabled = true;
             let itemValue = item.value.trim();//Убираем пробелы
             if (itemValue !== '') {// Если не пустой
-                appData.addIncome.push(itemValue);//Записываем в массив
+                this.addIncome.push(itemValue);//Записываем в массив
             }
         });
     },
@@ -170,13 +170,13 @@ let appData = {
 
 
     getExpensesMonth: function() { //Сумма обязательных раходов
-        for (let key in appData.expenses) {
-            appData.expensesMonth += appData.expenses[key];
+        for (let key in this.expenses) {
+            this.expensesMonth += this.expenses[key];
         }
     },
     getIncomeMonth: function() {
-        for (let key in appData.income) {
-            appData.incomeMohth += appData.income[key];
+        for (let key in this.income) {
+            this.incomeMohth += this.income[key];
         }
     },
 
