@@ -297,15 +297,6 @@ let appData = {
         buttonIncomeAdd.style.display = 'block';
         buttonExpensesAdd.style.display = 'block';
     },
-
-    eventStart: function() {
-        //localStorage.setItem('clean', JSON.stringify(this));
-
-        
-
-
-        appData.start();
-    },
     check: function() {
         buttonStart.disabled = true;
         inputSalaryAmount.addEventListener('input', function() {
