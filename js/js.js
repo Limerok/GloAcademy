@@ -58,26 +58,27 @@ let appData = {
     expensesMonth: 0,//Сумма обязательных расходов в месяц
     start: function () {
         this.budget = +inputSalaryAmount.value; //Доход за месяц из инпута
-        
+        inputSalaryAmount.disabled = true;
+        depositCheckbox.disabled = true;
+
+        buttonStart.style.display = 'none';
+        buttonCancel.style.display = 'block';
+
+        buttonIncomeAdd.style.display = 'none';
+        buttonExpensesAdd.style.display = 'none';
 
         this.getExpenses();
         this.getIncome();
         this.getExpensesMonth();
         this.getIncomeMonth();
-        
         this.getAddIncome();
         this.getTargetMonth();
         this.getStatusIncome(); 
-        
         this.getBudget();
         this.getInfoDeposit();
-        
-
-        
         this.getAddExpenses();
         this.showResult();
 
-        
     },
     showResult: function() { //Выводим результаты
         resultBudgetMonth.value = this.budgetMonth;
@@ -112,9 +113,14 @@ let appData = {
     },
     getExpenses: function() { // Обязательные расходы
         expensesItems.forEach(function(item) {
-            let itemExpenses = item.querySelector('.expenses-title').value;//Обяз.расх наимен
-            let cashExpenses = item.querySelector('.expenses-amount').value;//Обяз.расх сумма
+            let itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
+            let cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
 
+            itemExpenses.disabled = true;
+            cashExpenses.disabled = true;
+
+            itemExpenses = itemExpenses.value;//Обяз.расх наимен
+            cashExpenses = cashExpenses.value;//Обяз.расх сумма
             /* itemExpenses.disabled = true; */
             /* cashExpenses.disabled = true; */
 
@@ -125,8 +131,14 @@ let appData = {
     },
     getIncome: function() { //Доп доход
         incomeItems.forEach(function(item) {//Проходим коллекцию ДопДохода
-            let itemIncome = item.querySelector('.income-title').value;//Доп.доход наимен
-            let cashIncome = item.querySelector('.income-amount').value;//до.доход сумма
+            let itemIncome = item.querySelector('.income-title');//Доп.доход наимен
+            let cashIncome = item.querySelector('.income-amount');//до.доход сумма
+
+            itemIncome.disabled = true;
+            cashIncome.disabled = true;
+
+            itemIncome = itemIncome.value;//Доп.доход наимен
+            cashIncome = cashIncome.value;//до.доход сумма
 
             if (itemIncome !== '' && cashIncome !== '') {
                 appData.income[itemIncome] = +cashIncome;// записываем в объект
@@ -134,6 +146,7 @@ let appData = {
         });
     },
     getAddExpenses: function() {// Получаем возможные расходы
+        inputAdditionalExpenses.disabled = true;
         let addExpenses = inputAdditionalExpenses.value.toLowerCase().split(',');
         // В нижний регистр и делаем массив
         addExpenses.forEach(function(item) { // Проходим массив
@@ -146,6 +159,7 @@ let appData = {
 
     getAddIncome: function() {// Записываем возможные доходы
         inputAdditionalIncome.forEach(function(item) {
+            item.disabled = true;
             let itemValue = item.value.trim();//Убираем пробелы
             if (itemValue !== '') {// Если не пустой
                 appData.addIncome.push(itemValue);//Записываем в массив
@@ -183,6 +197,7 @@ let appData = {
     },
     
     getTargetMonth: function () {
+        inputMission.disabled = true;
         return inputMission.value / this.budgetMonth;
 
         /* let status = Math.ceil(appData.mission / appData.budgetMonth); //посчитать за сколько месяцев будет достигнута 
@@ -220,6 +235,7 @@ let appData = {
         resultAdditionalIncome.value = '';
         resultTargetMonth.value = '';
         resultIncomePeriod.value = '';
+        depositCheckbox.checked = false;
 
         this.income = {};//объект с доп доходами
         this.incomeMohth = 0; //Дополнительный заработок
@@ -285,38 +301,10 @@ let appData = {
     eventStart: function() {
         //localStorage.setItem('clean', JSON.stringify(this));
 
-        buttonStart.style.display = 'none';
-        buttonCancel.style.display = 'block';
-
-        inputSalaryAmount.disabled = true;
-        inputAdditionalExpenses.disabled = true;
-        inputMission.disabled = true;
-        expensesItems.forEach(function(item) {
-            let itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
-            let cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
-
-            itemExpenses.disabled = true;
-            cashExpenses.disabled = true;
-        });
-        incomeItems.forEach(function(item) {//Проходим коллекцию ДопДохода
-            let itemIncome = item.querySelector('.income-title');//Доп.доход наимен
-            let cashIncome = item.querySelector('.income-amount');//до.доход сумма
-
-            itemIncome.disabled = true;
-            cashIncome.disabled = true;
-        });
-        inputAdditionalIncome.forEach(function(item) {
-            item.disabled = true;
-        });
-        depositCheckbox.disabled = true;
-        buttonIncomeAdd.style.display = 'none';
-        buttonExpensesAdd.style.display = 'none';
+        
 
 
         appData.start();
-    },
-    EventClear: function(){
-        appData.reset();
     },
     check: function() {
         buttonStart.disabled = true;
@@ -335,8 +323,8 @@ appData.check();
 
 
 
-buttonStart.addEventListener('click', appData.eventStart);
-buttonCancel.addEventListener('click', appData.EventClear);
+buttonStart.addEventListener('click', appData.start.bind(appData));
+buttonCancel.addEventListener('click', appData.reset.bind(appData));
 buttonIncomeAdd.addEventListener('click', appData.addIncomeBlock);
 buttonExpensesAdd.addEventListener('click', appData.addExpensesBlock);
 inputPeriod.addEventListener('input', appData.getPeriodAmount);
