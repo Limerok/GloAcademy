@@ -253,6 +253,7 @@ let appData = {
 
         buttonStart.style.display = 'block';
         buttonCancel.style.display = 'none';
+        this.check();
 
         inputSalaryAmount.disabled = false;
         inputSalaryAmount.value = '';
@@ -323,22 +324,22 @@ let appData = {
     },
     EventClear: function(){
         appData.reset();
+    },
+    check: function() {
+        buttonStart.disabled = true;
+        inputSalaryAmount.addEventListener('input', function() {
+        if (inputSalaryAmount.value === '') {
+            buttonStart.disabled = true;
+        }
+        if (inputSalaryAmount.value !== '') {
+            buttonStart.disabled = false;
+        }
+        });
     }
-
 };
 
+appData.check();
 
-
-
-buttonStart.disabled = true;
-inputSalaryAmount.addEventListener('input', function() {
-    if (inputSalaryAmount.value === '') {
-        buttonStart.disabled = true;
-    }
-    if (inputSalaryAmount.value !== '') {
-        buttonStart.disabled = false;
-    }
-});
 
 
 buttonStart.addEventListener('click', appData.eventStart);
