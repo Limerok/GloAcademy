@@ -55,7 +55,9 @@ const AppData = function () {
     this.budgetMonth = 0; //Бюджет на месяц (Доход - обязательные расходы)
     this.expensesMonth = 0;//Сумма обязательных расходов в месяц
 };
-
+AppData.prototype.isNamber = function (n) {
+    return !isNaN(parseFloat(n)) && isFinite(n); 
+};
 AppData.prototype.check = function() {
     buttonStart.disabled = true;
     inputSalaryAmount.addEventListener('input', function() {
@@ -107,6 +109,8 @@ AppData.prototype.showResult = function() { //Выводим результат�
 };
 AppData.prototype.addIncomeBlock = function() { //Кнопка доп дохода
     let cloneIncomeItem = incomeItems[0].cloneNode(true);
+    cloneIncomeItem.querySelector('.income-title').value = '';
+    cloneIncomeItem.querySelector('.income-amount').value = '';
     incomeItems[0].parentNode.insertBefore(cloneIncomeItem, buttonIncomeAdd);
 
     incomeItems = document.querySelectorAll('.income-items');
@@ -116,6 +120,8 @@ AppData.prototype.addIncomeBlock = function() { //Кнопка доп доход
 };
 AppData.prototype.addExpensesBlock = function() { // Кнопка обязательных расходов
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
+    cloneExpensesItem.querySelector('.expenses-title').value = '';
+    cloneExpensesItem.querySelector('.expenses-amount').value = '';
     expensesItems[0].parentNode.insertBefore(cloneExpensesItem, buttonExpensesAdd);
 
     expensesItems = document.querySelectorAll('.expenses-items');
@@ -301,6 +307,9 @@ AppData.prototype.reset = function () {
     buttonIncomeAdd.style.display = 'block';
     buttonExpensesAdd.style.display = 'block';
 };
+AppData.prototype.proverkaNumber = function(number) {
+    number.value = number.value.replace(/[^0-9]/g, '');
+};
 AppData.prototype.eventListener = function() {
     console.log(this);
     console.log(this);
@@ -309,6 +318,15 @@ AppData.prototype.eventListener = function() {
     buttonIncomeAdd.addEventListener('click', this.addIncomeBlock);
     buttonExpensesAdd.addEventListener('click', this.addExpensesBlock);
     inputPeriod.addEventListener('input', this.getPeriodAmount);
+
+    inputSalaryAmount.addEventListener('input',  this.proverkaNumber(inputSalaryAmount));
+        //inputSalaryAmount.value = inputSalaryAmount.value.replace(/[^0-9]/g, '');
+
+    inputAdditionalExpenses.addEventListener('input', function() {
+        inputAdditionalExpenses.value = inputAdditionalExpenses.value.replace(/[^а-я ,]/gi, '');
+    });
+    
+
 };
 
 
