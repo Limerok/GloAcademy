@@ -55,7 +55,6 @@ const AppData = function () {
     this.budgetMonth = 0; //Бюджет на месяц (Доход - обязательные расходы)
     this.expensesMonth = 0;//Сумма обязательных расходов в месяц
 };
-
 AppData.prototype.check = function() {
     buttonStart.disabled = true;
     inputSalaryAmount.addEventListener('input', function() {
