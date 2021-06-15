@@ -302,22 +302,28 @@ AppData.prototype.reset = function () {
     buttonExpensesAdd.style.display = 'block';
 };
 AppData.prototype.eventListener = function() {
-    
+    console.log(this);
+    buttonStart.addEventListener('click', this.start);
+    buttonCancel.addEventListener('click', this.reset);
+    buttonIncomeAdd.addEventListener('click', this.addIncomeBlock);
+    buttonExpensesAdd.addEventListener('click', this.addExpensesBlock);
+    inputPeriod.addEventListener('input', this.getPeriodAmount);
 };
 
 
 const appData = new AppData ();
 console.log(appData);
 
-appData.check(); 
+appData.check();
 
 
 
-buttonStart.addEventListener('click', appData.start.bind(appData));
+
+/* buttonStart.addEventListener('click', appData.start.bind(appData));
 buttonCancel.addEventListener('click', appData.reset.bind(appData));
 buttonIncomeAdd.addEventListener('click', appData.addIncomeBlock);
 buttonExpensesAdd.addEventListener('click', appData.addExpensesBlock);
-inputPeriod.addEventListener('input', appData.getPeriodAmount);
+inputPeriod.addEventListener('input', appData.getPeriodAmount); */
 
 
 
