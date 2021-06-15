@@ -55,6 +55,7 @@ const AppData = function () {
     this.budgetMonth = 0; //Бюджет на месяц (Доход - обязательные расходы)
     this.expensesMonth = 0;//Сумма обязательных расходов в месяц
 };
+
 AppData.prototype.check = function() {
     buttonStart.disabled = true;
     inputSalaryAmount.addEventListener('input', function() {
@@ -302,8 +303,9 @@ AppData.prototype.reset = function () {
 };
 AppData.prototype.eventListener = function() {
     console.log(this);
-    buttonStart.addEventListener('click', this.start);
-    buttonCancel.addEventListener('click', this.reset);
+    console.log(this);
+    buttonStart.addEventListener('click', this.start.bind(this));
+    buttonCancel.addEventListener('click', this.reset.bind(this));
     buttonIncomeAdd.addEventListener('click', this.addIncomeBlock);
     buttonExpensesAdd.addEventListener('click', this.addExpensesBlock);
     inputPeriod.addEventListener('input', this.getPeriodAmount);
@@ -314,7 +316,7 @@ const appData = new AppData ();
 console.log(appData);
 
 appData.check();
-
+appData.eventListener();
 
 
 
