@@ -27,8 +27,12 @@ depositCalcPercent = document.querySelector('.deposit-percent'),//Процент
 inputAdditionalIncome = document.querySelectorAll('.additional_income-item'),//возможный доход 
 //Дополнительные доходы
 incomeItems = document.querySelectorAll('.income-items'),
+incomeTitle = document.querySelectorAll('.income-title'),
+incomeAmount = document.querySelectorAll('.income-amount'),
 //Обязательные расходы
 expensesItems = document.querySelectorAll('.expenses-items'),
+expensesTitle = document.querySelectorAll('.expenses-title'),
+expensesAmount = document.querySelectorAll('.expenses-amount'),
 //Возможные расходы
 inputAdditionalExpenses = document.querySelector('.additional_expenses-item'),
 //Правые элементы
@@ -112,11 +116,13 @@ AppData.prototype.addIncomeBlock = function() { //Кнопка доп доход
     cloneIncomeItem.querySelector('.income-title').value = '';
     cloneIncomeItem.querySelector('.income-amount').value = '';
     incomeItems[0].parentNode.insertBefore(cloneIncomeItem, buttonIncomeAdd);
-
+    
     incomeItems = document.querySelectorAll('.income-items');
     if (incomeItems.length === 3) {
         buttonIncomeAdd.style.display = 'none';
     }
+
+    this.proverkaNumber();
 };
 AppData.prototype.addExpensesBlock = function() { // Кнопка обязательных расходов
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -128,6 +134,8 @@ AppData.prototype.addExpensesBlock = function() { // Кнопка обязате
     if (expensesItems.length === 3) {
         buttonExpensesAdd.style.display = 'none';
     }
+    
+    this.proverkaNumber();
 };
 AppData.prototype.getExpenses = function() { // Обязательные расходы
     expensesItems.forEach((item) =>  {
@@ -308,24 +316,38 @@ AppData.prototype.reset = function () {
     buttonExpensesAdd.style.display = 'block';
 };
 AppData.prototype.proverkaNumber = function(number) {
-    number.value = number.value.replace(/[^0-9]/g, '');
-};
-AppData.prototype.eventListener = function() {
-    console.log(this);
-    console.log(this);
-    buttonStart.addEventListener('click', this.start.bind(this));
-    buttonCancel.addEventListener('click', this.reset.bind(this));
-    buttonIncomeAdd.addEventListener('click', this.addIncomeBlock);
-    buttonExpensesAdd.addEventListener('click', this.addExpensesBlock);
-    inputPeriod.addEventListener('input', this.getPeriodAmount);
+    let input = document.querySelectorAll('input');
 
-    inputSalaryAmount.addEventListener('input',  this.proverkaNumber(inputSalaryAmount));
-        //inputSalaryAmount.value = inputSalaryAmount.value.replace(/[^0-9]/g, '');
+    input.forEach(function(item) {
+        let placeholder = item.getAttribute('placeholder');
+        if (placeholder === 'Сумма') {
+            item.addEventListener('input', function() {
+                item.value = item.value.replace(/[^0-9]/g, '');
 
-    inputAdditionalExpenses.addEventListener('input', function() {
-        inputAdditionalExpenses.value = inputAdditionalExpenses.value.replace(/[^а-я ,]/gi, '');
+            });
+            console.log(item);
+        }
+        if (placeholder === 'Наименование') {
+            item.addEventListener('input', function() {
+                item.value = item.value.replace(/[^а-я ,]/gi, '');
+            });
+            console.log(item);
+        } if (placeholder === 'название'){
+            item.addEventListener('input', function() {
+                item.value = item.value.replace(/[^а-я ,]/gi, '');
+            });
+            console.log(item);
+        }
     });
     
+    
+};
+AppData.prototype.eventListener = function() {
+    buttonStart.addEventListener('click', this.start.bind(this));
+    buttonCancel.addEventListener('click', this.reset.bind(this));
+    buttonIncomeAdd.addEventListener('click', this.addIncomeBlock.bind(this));
+    buttonExpensesAdd.addEventListener('click', this.addExpensesBlock.bind(this));
+    inputPeriod.addEventListener('input', this.getPeriodAmount);
 
 };
 
@@ -335,6 +357,7 @@ console.log(appData);
 
 appData.check();
 appData.eventListener();
+appData.proverkaNumber();
 
 
 
