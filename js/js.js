@@ -122,7 +122,7 @@ AppData.prototype.addIncomeBlock = function() { //Кнопка доп доход
         buttonIncomeAdd.style.display = 'none';
     }
 
-    this.proverkaNumber();
+    this.checkingInputs();
 };
 AppData.prototype.addExpensesBlock = function() { // Кнопка обязательных расходов
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -135,7 +135,7 @@ AppData.prototype.addExpensesBlock = function() { // Кнопка обязате
         buttonExpensesAdd.style.display = 'none';
     }
     
-    this.proverkaNumber();
+    this.checkingInputs();
 };
 AppData.prototype.getExpenses = function() { // Обязательные расходы
     expensesItems.forEach((item) =>  {
@@ -315,7 +315,7 @@ AppData.prototype.reset = function () {
     buttonIncomeAdd.style.display = 'block';
     buttonExpensesAdd.style.display = 'block';
 };
-AppData.prototype.proverkaNumber = function(number) {
+AppData.prototype.checkingInputs = function(number) {
     let input = document.querySelectorAll('input');
 
     input.forEach(function(item) {
@@ -343,6 +343,8 @@ AppData.prototype.proverkaNumber = function(number) {
     
 };
 AppData.prototype.eventListener = function() {
+    this.check();
+    this.checkingInputs();
     buttonStart.addEventListener('click', this.start.bind(this));
     buttonCancel.addEventListener('click', this.reset.bind(this));
     buttonIncomeAdd.addEventListener('click', this.addIncomeBlock.bind(this));
@@ -353,11 +355,7 @@ AppData.prototype.eventListener = function() {
 
 
 const appData = new AppData ();
-console.log(appData);
-
-appData.check();
 appData.eventListener();
-appData.proverkaNumber();
 
 
 
