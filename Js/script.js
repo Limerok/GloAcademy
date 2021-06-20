@@ -65,6 +65,24 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
     toggleMenu();
+    //Анимация перехода меню
+    document.querySelectorAll('a[href^="#"').forEach(link => { //ищем все ссылки с #
+        link.addEventListener('click', function(e) {//вешаем на них событие
+            e.preventDefault();//отменяем стандартные действия
+    
+            let href = this.getAttribute('href').substring(1);//получаем атрибуты ссылки
+    
+            const scrollTarget = document.getElementById(href),
+                topOffset = 0,
+                elementPosition = scrollTarget.getBoundingClientRect().top,
+                offsetPosition = elementPosition - topOffset;
+    
+            window.scrollBy({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        });
+    });
 
     //Popup
     const togglePopup = () => {
