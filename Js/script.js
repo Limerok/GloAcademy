@@ -109,7 +109,10 @@ window.addEventListener('DOMContentLoaded', () => {
             elem.addEventListener('click', () => {
                 popupContent.style.left = 0;
                 popup.style.display = `block`;
-                leftInterval = requestAnimationFrame(leftAnimate);
+                console.log(screen.width);
+                if (screen.width >= 768 ) {
+                    leftInterval = requestAnimationFrame(leftAnimate);
+                }
             });
         });
         popupClose.addEventListener('click', () => {
