@@ -59,7 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         bodyContent.addEventListener('click', (event) => {
             let target = event.target;
-            console.log(target);
+
             if (target.closest('.menu') || target.closest('.close-btn') || target.closest('menu > ul > li')) {
                 handlerMenu();
             } else if (!target.closest('menu')){
@@ -74,16 +74,19 @@ window.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();//отменяем стандартные действия
     
             let href = this.getAttribute('href').substring(1);//получаем атрибуты ссылки
+            if (href === 'close') {
+                return;
+            } else {
+                const scrollTarget = document.getElementById(href),
+                    topOffset = 0,
+                    elementPosition = scrollTarget.getBoundingClientRect().top,
+                    offsetPosition = elementPosition - topOffset;
     
-            const scrollTarget = document.getElementById(href),
-                topOffset = 0,
-                elementPosition = scrollTarget.getBoundingClientRect().top,
-                offsetPosition = elementPosition - topOffset;
-    
-            window.scrollBy({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
+                window.scrollBy({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
         });
     });
 
