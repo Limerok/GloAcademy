@@ -69,7 +69,8 @@ window.addEventListener('DOMContentLoaded', () => {
     toggleMenu();
 
     //Анимация перехода меню
-    document.querySelectorAll('a[href^="#"').forEach(link => { //ищем все ссылки с #
+    const menu = document.querySelector('menu');
+    menu.querySelectorAll('a[href^="#"').forEach(link => { //ищем все ссылки с #
         link.addEventListener('click', function(e) { //вешаем на них событие
             e.preventDefault();//отменяем стандартные действия
 
