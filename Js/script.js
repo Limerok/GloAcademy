@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();//отменяем стандартные действия
 
             const href = this.getAttribute('href').substring(1);//получаем атрибуты ссылки
-            if (href === 'close') {
+            if (href === 'close' || href === '') {
                 return;
             } else {
                 const scrollTarget = document.getElementById(href),
