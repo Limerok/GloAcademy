@@ -264,4 +264,76 @@ window.addEventListener('DOMContentLoaded', () => {
         
     };
     slider();
+
+    //НАша команда
+    const photoTeam = () => {
+        commandPhoto = document.querySelectorAll('.command__photo');
+        commandPhoto.forEach((event) => {
+            event.addEventListener('mouseenter', event => {
+                const srcImg = event.target.src;
+                event.target.src = event.target.dataset.img;
+                event.target.dataset.img = srcImg;
+            });
+        });
+        commandPhoto.forEach((event) => {
+            event.addEventListener('mouseleave', event => {
+                const srcImg = event.target.src;
+                event.target.src = event.target.dataset.img;
+                event.target.dataset.img = srcImg;
+            });
+        });
+    };
+    photoTeam();
+
+    //Разрешение ввода
+    const checks = () => {
+        const calcItem = document.querySelectorAll('.calc-item'),
+            mainFormInput = document.querySelector('.main-form-input'),
+            mainForm = document.getElementById('form3'),
+            foterFormInput = document.querySelector('.footer-form-input');
+            console.log(mainForm)
+        calcItem.forEach((item, i) => { 
+            if (i>0) {
+                item.addEventListener('input', () => {
+                    item.value = item.value.replace(/[^0-9]/, '');
+                });
+            }   
+        }) ;
+
+        checkValue = (event) => {
+            let target = event.target;
+            if (target.name === 'user_name' || target.closest('#form2-message')) {
+                target.value = target.value.replace(/[^а-я- ]/gi, '');
+            } else if(target.name === 'user_email') {
+                target.value = target.value.replace(/[^a-z@-_.!~*']/gi, '');
+            } else if(target.name === 'user_phone') {
+                target.value = target.value.replace(/[^0-9()-]/gi, '');
+            }
+
+            target.addEventListener('blur', () => {
+                if (target.name === 'user_name') {
+                    target.value = target.value.replace(/\s+/gi, ' ');
+                    target.value = target.value.replace(/-+/gi, '-');
+                    target.value = target.value.replace(/(^\s+|\s+$)/g,'');
+                    target.value = target.value.replace(/(^|\s|-)\S/g, function(a) {return a.toUpperCase()})
+                    
+                } else if(target.closest('#form2-message')) {
+                    target.value = target.value.replace(/\s+/gi, ' ');
+                    target.value = target.value.replace(/-+/gi, '-');
+                    target.value = target.value.replace(/(^\s+|\s+$)/g,'');
+                }
+            });
+        }
+        foterFormInput.addEventListener('input', event => {
+            checkValue(event);
+        });
+        mainFormInput.addEventListener('input', event => {
+            checkValue(event);
+        }); 
+        mainForm.addEventListener('input', event => {
+            checkValue(event);
+            console.log(1)
+        }); 
+    }
+    checks();
 });
