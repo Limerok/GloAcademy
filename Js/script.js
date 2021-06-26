@@ -303,9 +303,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const checkValue = (event) => {
             let target = event.target;
             if (target.name === 'user_name' || target.closest('#form2-message')) {
-                target.value = target.value.replace(/[^а-я- ]/gi, '');
+                target.value = target.value.replace(/[^а-яё -]/gi, '');
             } else if(target.name === 'user_email') {
-                target.value = target.value.replace(/[^a-z@-_.!~*']/gi, '');
+                target.value = target.value.replace(/[^a-z@_\-.!~*']/gi, '');
             } else if(target.name === 'user_phone') {
                 target.value = target.value.replace(/[^0-9()-]/gi, '');
             }
@@ -348,7 +348,8 @@ window.addEventListener('DOMContentLoaded', () => {
         const countSum = () => {
             let total = 0,
             countValue = 1,
-            dayValue = 1;
+            dayValue = 1,
+            count = 0;
 
             const typeValue = calcType.options[calcType.selectedIndex].value;
             let squareValue = +calcSquare.value;
@@ -366,8 +367,30 @@ window.addEventListener('DOMContentLoaded', () => {
             if (typeValue && squareValue) {
                 total = price * typeValue * squareValue * countValue * dayValue;
             } 
+            function n (t) {
+                let id = setInterval(() => {
+                    if (count <= total - 1000) {
+                        totalValue.textContent = count;
+                        count += 500;
+                    }if (count <= total - 100) {
+                        totalValue.textContent = count;
+                        count += 50;
+                    }else if (count <= total -10) {
+                        totalValue.textContent = count;
+                        count += 5;
+                    }else if (count <= total) {
+                        totalValue.textContent = count;
+                        count += 1;
+                    } else {
+                        clearInterval(id);
+                    }
+                }, t);
+            }
+            
+            n(0.1);
+            /* totalValue.textContent = total; */
 
-            totalValue.textContent = total;
+            
         };
 
         calcBlock.addEventListener('change', (event) => {
