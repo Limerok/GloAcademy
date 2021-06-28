@@ -302,12 +302,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
         const checkValue = (event) => {
             let target = event.target;
-            if (target.name === 'user_name' || target.closest('#form2-message')) {
-                target.value = target.value.replace(/[^а-яё -]/gi, '');
+            if (target.name === 'user_name') {
+                target.value = target.value.replace(/[^а-яё ]/gi, '');
+            } else if (target.closest('#form2-message')) {
+                target.value = target.value.replace(/[^а-яё 0-9,]/gi, '');
             } else if(target.name === 'user_email') {
                 target.value = target.value.replace(/[^a-z@_\-.!~*']/gi, '');
             } else if(target.name === 'user_phone') {
-                target.value = target.value.replace(/[^0-9()-]/gi, '');
+                target.value = target.value.replace(/[^0-9\+]/gi, '');
             }
 
             target.addEventListener('blur', () => {
@@ -402,4 +404,72 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
     calc(100);
+
+    //Send-ajax-form
+    const sendForm = () => {
+        const errorNessage = 'Что то пошло не так',
+            loadMessage = '<img src="../images/loading.gif" style="width:50px;height:auto;">',
+            successMesage = 'Спасибо! Мы скоро с Вами свяжемся.';
+        
+        const form = document.querySelectorAll('form');
+        console.log(form);
+        
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 3rem;';
+        statusMessage.style.cssText = 'color: white;';
+
+        const resetInput = (form) => {
+            console.log(form);
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                console.log(input);
+                input.value = '';
+            });
+        };
+
+        const postData = (body, outputData, errorData) => {
+            const request = new XMLHttpRequest();
+                request.addEventListener('readystatechange', () => {
+                    if (request.readyState !==4) {
+                        return;
+                    }
+                    if (request.status === 200) {
+                        outputData();
+                    } else {
+                        errorData(request.status);
+                    }
+                });
+                request.open('POST', './server.php');
+                request.setRequestHeader('Conternt-Type', 'application/json');
+                
+                request.send(JSON.stringify(body));
+        };
+
+        form.forEach(item => {
+            item.addEventListener('submit', event => {
+                event.preventDefault();
+                item.appendChild(statusMessage);
+                statusMessage.innerHTML = loadMessage;
+                const formData = new FormData(item);
+                let body = {};
+                formData.forEach((value, i) => {
+                    body[i] = value;                
+                });
+                postData(body, 
+                    () =>{
+                        statusMessage.textContent = successMesage;
+                    }, 
+                    (error) => {
+                        statusMessage.textContent = errorNessage;
+                        console.log(error);
+                    }
+                );
+                resetInput(item);
+            });
+        });
+        
+    };
+    sendForm();
+
+    
 });
