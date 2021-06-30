@@ -422,7 +422,16 @@ window.addEventListener('DOMContentLoaded', () => {
         };
 
         const postData = (body) => {
-            return new Promise((resolve, reject) => {
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Conternt-Type': 'application/json'
+                },
+                body: body
+            });
+
+
+            /* return new Promise((resolve, reject) => {
                 const request = new XMLHttpRequest();
                 request.addEventListener('readystatechange', () => {
                     if (request.readyState !==4) {
@@ -440,7 +449,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 request.setRequestHeader('Conternt-Type', 'application/json');
                 
                 request.send(JSON.stringify(body));
-            });
+            }); */
         };
 
         form.forEach(item => {
@@ -449,15 +458,19 @@ window.addEventListener('DOMContentLoaded', () => {
                 item.appendChild(statusMessage);
                 statusMessage.innerHTML = loadMessage;
                 const formData = new FormData(item);
-                let body = {};
+                /* let body = {};
                 formData.forEach((value, i) => {
                     body[i] = value;                
-                });
-                postData(body)
-                    .then(() => {
+                }); */
+                postData(formData)
+                    .then((response) => {
+                        if (response.status !== 200) {
+                            throw new Error('status not 200');
+                        }
                         statusMessage.textContent = successMesage;
-                    }, () => {
-                        statusMessage.textContent = errorNessage;
+                    })
+                    .catch(() => {
+                            statusMessage.textContent = errorNessage;
                     });
 
                     /* .then(statusMessage.textContent = successMesage)
