@@ -115,7 +115,6 @@ window.addEventListener('DOMContentLoaded', () => {
             elem.addEventListener('click', () => {
                 popupContent.style.left = 0;
                 popup.style.display = `block`;
-                console.log(screen.width);
                 if (screen.width >= 768) {
                     leftInterval = requestAnimationFrame(leftAnimate);
                 }
@@ -177,7 +176,6 @@ window.addEventListener('DOMContentLoaded', () => {
             slider = document.querySelector('.portfolio-content');
 
         for (let i = 0; i < slide.length; i++) { // Создаем li с классом dot
-            console.log(i);
             const newDot = document.createElement('li');
             newDot.classList.add('dot');
             portfolioDot.insertAdjacentElement('beforeend', newDot);
@@ -412,37 +410,37 @@ window.addEventListener('DOMContentLoaded', () => {
             successMesage = 'Спасибо! Мы скоро с Вами свяжемся.';
         
         const form = document.querySelectorAll('form');
-        console.log(form);
-        
         const statusMessage = document.createElement('div');
         statusMessage.style.cssText = 'font-size: 3rem;';
         statusMessage.style.cssText = 'color: white;';
 
         const resetInput = (form) => {
-            console.log(form);
             const inputs = form.querySelectorAll('input');
             inputs.forEach(input => {
-                console.log(input);
                 input.value = '';
             });
         };
 
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
+        const postData = (body) => {
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
                 request.addEventListener('readystatechange', () => {
                     if (request.readyState !==4) {
                         return;
                     }
                     if (request.status === 200) {
-                        outputData();
+                        resolve();
                     } else {
-                        errorData(request.status);
+                        console.warn(request.status);
+                        reject();
+
                     }
                 });
                 request.open('POST', './server.php');
                 request.setRequestHeader('Conternt-Type', 'application/json');
                 
                 request.send(JSON.stringify(body));
+            });
         };
 
         form.forEach(item => {
@@ -455,15 +453,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 formData.forEach((value, i) => {
                     body[i] = value;                
                 });
-                postData(body, 
-                    () =>{
+                postData(body)
+                    .then(() => {
                         statusMessage.textContent = successMesage;
-                    }, 
-                    (error) => {
+                    }, () => {
                         statusMessage.textContent = errorNessage;
-                        console.log(error);
-                    }
-                );
+                    });
+
+                    /* .then(statusMessage.textContent = successMesage)
+                    .catch(statusMessage.textContent = errorNessage); */
+            
                 resetInput(item);
             });
         });
