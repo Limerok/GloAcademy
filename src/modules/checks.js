@@ -17,9 +17,9 @@ const checks = () => {
         if (target.name === 'user_name') {
             target.value = target.value.replace(/[^а-яё ]/gi, '');
         } else if (target.closest('#form2-message')) {
-            target.value = target.value.replace(/[^а-яё 0-9,]/gi, '');
+            target.value = target.value.replace(/[^а-яё 0-9,.]/gi, '');
         } else if(target.name === 'user_email') {
-            target.value = target.value.replace(/[^a-z@_\-.!~*']/gi, '');
+            target.value = target.value.replace(/[^a-z\-1-9@_.!~*']/gi, '');
         } else if(target.name === 'user_phone') {
             target.value = target.value.replace(/[^0-9\+]/gi, '');
         }
@@ -33,8 +33,11 @@ const checks = () => {
                 
             } else if(target.closest('#form2-message')) {
                 target.value = target.value.replace(/\s+/gi, ' ');
-                target.value = target.value.replace(/-+/gi, '-');
                 target.value = target.value.replace(/(^\s+|\s+$)/g,'');
+                target.value = target.value.replace(/,+/gi, ',');
+                target.value = target.value.replace(/\.+/gi, '.');
+            } else if(target.name ==='user_email') {
+                target.value = target.value.replace(/-+/gi, '-');
             }
         });
     };
