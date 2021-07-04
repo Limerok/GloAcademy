@@ -30,6 +30,7 @@ const checks = () => {
                 target.value = target.value.replace(/\s+/gi, ' ');
                 target.value = target.value.replace(/-+/gi, '-');
                 target.value = target.value.replace(/(^\s+|\s+$)/g,'');
+                target.value = target.value.toLowerCase();
                 target.value = target.value.replace(/(^|\s|-)\S/g, function(a) {return a.toUpperCase();});
                 
             } else if(target.closest('#form2-message')) {
