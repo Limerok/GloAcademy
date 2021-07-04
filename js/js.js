@@ -1,7 +1,3 @@
-//Остановился на 28 =05
-//Остановился на 28 =05
-//Остановился на 28 =05
-//Остановился на 28 =05
 
 'use strict';
 
@@ -82,17 +78,16 @@ class AppData {
         buttonIncomeAdd.style.display = 'none';
         buttonExpensesAdd.style.display = 'none';
     
-        this.getExpenses();
-        this.getIncome();
+        this.getExpInc();
         this.getExpensesMonth();
         this.getIncomeMonth();
-        this.getAddIncome();
         this.getTargetMonth();
-        this.getStatusIncome();
         this.getInfoDeposit();
         this.getBudget();
-        this.getAddExpenses();
+        this.getAddIncExp();
         this.showResult();
+
+       
     
     }
     showResult() { //Выводим результаты
@@ -108,85 +103,63 @@ class AppData {
             resultIncomePeriod.value = this.calcSavedMoney();
         });
     }
-    addIncomeBlock() { //Кнопка доп дохода
-        const cloneIncomeItem = incomeItems[0].cloneNode(true);
-        cloneIncomeItem.querySelector('.income-title').value = '';
-        cloneIncomeItem.querySelector('.income-amount').value = '';
-        incomeItems[0].parentNode.insertBefore(cloneIncomeItem, buttonIncomeAdd);
-        
-        incomeItems = document.querySelectorAll('.income-items');
-        if (incomeItems.length === 3) {
-            buttonIncomeAdd.style.display = 'none';
+    addExpIncBlock (expInc, event) {
+        const buttonNone = event.target;
+        const cloneItem = expInc[0].cloneNode(true);
+        let startStr = cloneItem.className.split('-')[0];
+        cloneItem.querySelector(`.${startStr}-title`).value = '';
+        cloneItem.querySelector(`.${startStr}-amount`).value = '';
+        expInc[0].parentNode.insertBefore(cloneItem, buttonNone);
+
+        expInc = document.querySelectorAll(`.${startStr}-items`);
+        if (expInc.length === 3) {
+            buttonNone.style.display = 'none';
         }
-    
+
         this.checkingInputs();
     }
-    addExpensesBlock() { // Кнопка обязательных расходов
-        const cloneExpensesItem = expensesItems[0].cloneNode(true);
-        cloneExpensesItem.querySelector('.expenses-title').value = '';
-        cloneExpensesItem.querySelector('.expenses-amount').value = '';
-        expensesItems[0].parentNode.insertBefore(cloneExpensesItem, buttonExpensesAdd);
+    getExpInc () {
+        let incomeItems = document.querySelectorAll('.income-items');
+        let expensesItems = document.querySelectorAll('.expenses-items');
+        const count = (item) => {
+            const startStr = item.className.split('-')[0];
+            let itemTitle = item.querySelector(`.${startStr}-title`);//Доп.доход наимен
+            let itemAmount = item.querySelector(`.${startStr}-amount`);//до.доход сумма
+
+            itemTitle.disabled = true;
+            itemAmount.disabled = true;
     
-        expensesItems = document.querySelectorAll('.expenses-items');
-        if (expensesItems.length === 3) {
-            buttonExpensesAdd.style.display = 'none';
-        }
-        
-        this.checkingInputs();
-    }
-    getExpenses() { // Обязательные расходы
-        expensesItems.forEach((item) =>  {
-            let itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
-            let cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
+            itemTitle = itemTitle.value;//Доп.доход наимен
+            itemAmount = itemAmount.value;//до.доход сумма
     
-            itemExpenses.disabled = true;
-            cashExpenses.disabled = true;
-    
-            itemExpenses = itemExpenses.value;//Обяз.расх наимен
-            cashExpenses = cashExpenses.value;//Обяз.расх сумма
-            /* itemExpenses.disabled = true; */
-            /* cashExpenses.disabled = true; */
-    
-            if (itemExpenses !== '' && cashExpenses !== ''){//если не пустые то
-                this.expenses[itemExpenses] = +cashExpenses;//записываем в объект
+            if (itemTitle !== '' && itemAmount !== '') {
+                this[startStr][itemTitle] = +itemAmount;// записываем в объект
             }
-        });
+            
+        };
+        incomeItems.forEach(count);
+        expensesItems.forEach(count);
     }
-    getIncome() { //Доп доход
-        incomeItems.forEach((item) => {//Проходим коллекцию ДопДохода
-            let itemIncome = item.querySelector('.income-title');//Доп.доход наимен
-            let cashIncome = item.querySelector('.income-amount');//до.доход сумма
-    
-            itemIncome.disabled = true;
-            cashIncome.disabled = true;
-    
-            itemIncome = itemIncome.value;//Доп.доход наимен
-            cashIncome = cashIncome.value;//до.доход сумма
-    
-            if (itemIncome !== '' && cashIncome !== '') {
-                this.income[itemIncome] = +cashIncome;// записываем в объект
-            }
-        });
-    }
-    getAddExpenses() {// Получаем возможные расходы
+    getAddIncExp () {
         inputAdditionalExpenses.disabled = true;
         const addExpenses = inputAdditionalExpenses.value.toLowerCase().split(',');
-        // В нижний регистр и делаем массив
-        addExpenses.forEach((item) => { // Проходим массив
-            item = item.trim();//Убираем пробелы
-            if (item !== ''){// Если не пустой
-                this.addExpenses.push(item);//Записываем в массив
+    
+        const count = (item) => {
+            if (item.className === 'additional_income-item') {
+                const itemValue = item.value.trim();//Убираем пробелы
+                if (itemValue !== '') {// Если не пустой
+                    this.addIncome.push(itemValue);//Записываем в массив
+                }
+            } else {
+                item = item.trim();//Убираем пробелы
+                if (item !== ''){// Если не пустой
+                    this.addExpenses.push(item);//Записываем в массив
+                }
             }
-        });
-    }
-    getAddIncome() {// Записываем возможные доходы
-        inputAdditionalIncome.forEach((item) => {
-            item.disabled = true;
-            const itemValue = item.value.trim();//Убираем пробелы
-            if (itemValue !== '') {// Если не пустой
-                this.addIncome.push(itemValue);//Записываем в массив
-            }
-        });
+        };
+
+        addExpenses.forEach(count);
+        inputAdditionalIncome.forEach(count);
     }
     getExpensesMonth() { //Сумма обязательных раходов
         for (let key in this.expenses) {
@@ -203,28 +176,9 @@ class AppData {
         this.budgetMonth = this.budget + this.incomeMohth - this.expensesMonth + monthDeposit;//Накопления за месяц (Доходы минус расходы)
         this.budgetDay = Math.floor(this.budgetMonth / 30); // Бюджет на день
     }
-    getStatusIncome() { //Функция проверки уровня дохода
-        if (this.budgetDay >= 1200) {
-            console.log('У вас высокий уровень дохода');
-        } else if (600 <= this.budgetDay) {
-            console.log('У вас средний уровень дохода');
-        } else if (0 <= this.budgetDay) {
-            console.log('К сожалению у вас уровень дохода ниже среднего');
-        } else if (this.budgetDay < 0) {
-            console.log('Что то пошло не так');
-        }
-    }
     getTargetMonth() {
         inputMission.disabled = true;
         return inputMission.value / this.budgetMonth;
-    
-        /* let status = Math.ceil(appData.mission / appData.budgetMonth); //посчитать за сколько месяцев будет достигнута 
-        //цель mission
-        if (status >= 0) {
-            console.log('Цель будет достигнута за: ' + status + ' месяцев.');
-        } else {
-            console.log('Цель не будет достигнута');
-        } */
     }
     getPeriodAmount() {
         const periodAmount = document.querySelector('.period-amount');
@@ -267,6 +221,7 @@ class AppData {
         inputAdditionalExpenses.value = '';
         inputMission.disabled = false;
         inputMission.value = '';
+        let expensesItems = document.querySelectorAll('.expenses-items');
         expensesItems.forEach(function(item, i) {
             const itemExpenses = item.querySelector('.expenses-title');//Обяз.расх наимен
             const cashExpenses = item.querySelector('.expenses-amount');//Обяз.расх сумма
@@ -280,6 +235,7 @@ class AppData {
             cashExpenses.disabled = false;
             cashExpenses.value = '';
         });
+        let incomeItems = document.querySelectorAll('.income-items');
         incomeItems.forEach(function(item, i) {//Проходим коллекцию ДопДохода
             const itemIncome = item.querySelector('.income-title');//Доп.доход наимен
             const cashIncome = item.querySelector('.income-amount');//до.доход сумма
@@ -320,18 +276,15 @@ class AppData {
                     item.value = item.value.replace(/[^0-9]/g, '');
     
                 });
-                console.log(item);
             }
             if (placeholder === 'Наименование') {
                 item.addEventListener('input', function() {
                     item.value = item.value.replace(/[^а-я ,]/gi, '');
                 });
-                console.log(item);
             } if (placeholder === 'название'){
                 item.addEventListener('input', function() {
                     item.value = item.value.replace(/[^а-я ,]/gi, '');
                 });
-                console.log(item);
             }
             if (placeholder === 'Процент') {
                 item.addEventListener('input', function() {
@@ -382,8 +335,8 @@ class AppData {
         this.checkingInputs();
         buttonStart.addEventListener('click', this.start.bind(this));
         buttonCancel.addEventListener('click', this.reset.bind(this));
-        buttonIncomeAdd.addEventListener('click', this.addIncomeBlock.bind(this));
-        buttonExpensesAdd.addEventListener('click', this.addExpensesBlock.bind(this));
+        buttonIncomeAdd.addEventListener('click', () => {this.addExpIncBlock(incomeItems, event);});
+        buttonExpensesAdd.addEventListener('click', () => {this.addExpIncBlock(expensesItems, event);});
         inputPeriod.addEventListener('input', this.getPeriodAmount);
         depositCheckbox.addEventListener('change', this.depositHandler.bind(this));
     
