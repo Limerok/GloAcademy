@@ -48,16 +48,21 @@ const calc = (price = 100) => {
             }, t);
         }
         
-        n(0.1);
-        /* totalValue.textContent = total; */
-
-        
+        n(0.1);        
+    };
+    const reset = () => {
+        calcSquare.value = '';
+        calcCount.value = '';
+        calcDay.value = '';
     };
 
     calcBlock.addEventListener('change', (event) => {
         const target = event.target;
-
-        if (target.matches('select') || target.matches('input')){
+        if (target.matches('input')){
+            countSum();
+        }
+        if (target.matches('select')){
+            reset();
             countSum();
         }
     });

@@ -8,6 +8,9 @@ const slider = () => {
         const newDot = document.createElement('li');
         newDot.classList.add('dot');
         portfolioDot.insertAdjacentElement('beforeend', newDot);
+        if (i===0) {
+            newDot.classList.add('dot-active');
+        }
     }
 
     const dot = document.querySelectorAll('.dot');

@@ -10,7 +10,7 @@ import checks from './modules/checks';
 import calc from './modules/calc';
 import sendForm from './modules/sendForm';
 //Таймер
-countTimer('21 June 2022');
+countTimer('09 July 2021');
 //Меню
 toggleMenu();
 //Popup

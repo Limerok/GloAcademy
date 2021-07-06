@@ -1,15 +1,21 @@
 const toggleMenu = () => {
     const bodyContent = document.querySelector('body'),
-        menu = document.querySelector('menu');
+        menu = document.querySelector('menu'),
+        main = document.querySelector('main');
 
     const handlerMenu = () => {
         menu.classList.toggle('active-menu');
     };
 
+    bodyContent.addEventListener('keydown', event => {
+        if (event.code === 'Escape') {
+            menu.classList.remove('active-menu');
+        }
+    });
     bodyContent.addEventListener('click', event => {
         const target = event.target;
 
-        if (target.closest('.menu') || target.closest('.close-btn') || target.closest('menu > ul > li')) {
+        if (target.closest('.menu') || target.closest('.close-btn') || target.closest('menu > ul > li > a')) {
             handlerMenu();
         } else if (!target.closest('menu')) {
             menu.classList.remove('active-menu');
@@ -17,7 +23,7 @@ const toggleMenu = () => {
     });
 
     //Анимация перехода меню
-    menu.querySelectorAll('a[href^="#"').forEach(link => { //ищем все ссылки с #
+    const count = (link) => {
         link.addEventListener('click', function(e) { //вешаем на них событие
             e.preventDefault();//отменяем стандартные действия
 
@@ -36,7 +42,9 @@ const toggleMenu = () => {
                 });
             }
         });
-    });
+    };
+    main.querySelectorAll('a[href^="#"').forEach(count);
+    menu.querySelectorAll('a[href^="#"').forEach(count);
 };
 
 export default toggleMenu;
